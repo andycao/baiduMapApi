@@ -15,58 +15,62 @@ body{margin:0;padding:0}
 </body>
 </html>
 <script type="text/javascript">
-
+//baidu map obj
 var map = new BMap.Map("container");
-map.centerAndZoom(new BMap.Point(116.401952, 40.032704), 12);
 
-    map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
+//get the current city and set the map center
+var myCity = new BMap.LocalCity();
+myCity.get(myLoca);
+function myLoca(result){
+console.log('myloca');
+    var cityName = result.name;
+    console.log(cityName)
+	if(cityName){
+		map.setCenter(cityName);
+	}
+}
+	
+	var point = new BMap.Point("上海市"); // 创建点坐标；这个点是由经度和纬度构成的，点可以随意选取 
+	map.centerAndZoom(point, 12);  //here is the center of map location
+
+	map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
     map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
-    map.enableScrollWheelZoom();                         //启用滚轮放大缩小
+    map.enableScrollWheelZoom(); 
 
+	
+addTag(116.30816,40.056863,200);
+addTag(116.402922,39.99908,149);
 
-var html1 = '<div style="position: absolute; margin: 0pt; padding: 0pt; width: 80px; height: 26px; left: -10px; top: -35px; overflow: hidden;">'
-                +     '<img id="hm1_image" style="border:none;left:0px; top:0px; position:absolute;" src="images/back1.png">'
-				+ '</div>'
-				+ '<label class=" BMapLabel" unselectable="on" style="position: absolute; -moz-user-select: none; display: inline; cursor: inherit; border: 0px none; padding: 2px 1px 1px; white-space: nowrap; font: 12px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 15px; top: -35px;">$ 20</label>',
-				
-      myRichMarker1 = new BMapLib.RichMarker(html1,  new BMap.Point(116.30816, 40.056863),{
-                                                  "anchor" : new BMap.Size(-47, -116),
-												  "enableDragging" : false});
-map.addOverlay(myRichMarker1);
-
-
-var html2 = '<div id="div2" style="position: absolute; margin: 0pt; padding: 0pt; width: 80px; height: 26px; left: -10px; top: -35px; overflow: hidden;">'
+function addTag(x,y,num){
+	//x -- first location
+	//y -- second location
+	//num -- money on map
+                        //启用滚轮放大缩小
+	
+	var divtag = '<div name="maptag" style="position: absolute; margin: 0pt; padding: 0pt; width: 80px; height: 26px; left: -10px; top: -35px; overflow: hidden;">'
                 +     '<img id="rm3_image" style="border:none;left:0px; top:0px; position:absolute;" src="images/back1.png">'
-				+ 	  '<label class=" BMapLabel" unselectable="on" style="position: absolute; -moz-user-select: none; display: inline; cursor: inherit; border: 0px none; padding: 2px 1px 1px; white-space: nowrap; font: 12px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 28px; top: 1px;">$ 20</label>'
-				+ '</div>',
-      myRichMarker2 = new BMapLib.RichMarker(html2,  new BMap.Point(116.402922, 39.99908),{
-                                                  "anchor" : new BMap.Size(-18, -27),
+				+ 	  '<label class=" BMapLabel" unselectable="on" style="position: absolute; -moz-user-select: none; display: inline; cursor: inherit; border: 0px none; padding: 2px 1px 1px; white-space: nowrap; font: 12px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 28px; top: 1px;">￥' + num + '</label>'
+				+ '</div>';    //tag object
+	var maptag = new BMapLib.RichMarker(divtag,  new BMap.Point(x, y),{
+                                                  "anchor" : new BMap.Size(-47, -116), //anchor
 												  "enableDragging" : false});
+	//add the tag to map
+	map.addOverlay(maptag);
+}
 
-												  
-												  
-	map.addOverlay(myRichMarker2);
-
-/*
-myRichMarker2.addEventListener("onmouseover", function(e) {
-	document.getElementById("rm3_image").src = "images/back2.png";
-});
-myRichMarker2.addEventListener("onmouseout", function(e) {
-	document.getElementById("rm3_image").src = "images/back1.png";
-});
-*/
-
-var timg = document.getElementById("rm3_image");
-var div2 = document.getElementById("div2");
-
-addEvents(div2,timg);
+var divimg = document.getElementsByName('maptag');
+//add to all div
+for(var i = 0; i < divimg.length; i++){
+	addEvents(divimg[i]);
+}
 
 //add over and leave event
-function addEvents(sender, target){
+function addEvents(sender){
+	var target = sender.getElementsByTagName("img")[0];
+	//target is first img element
 	sender.addEventListener("mouseover", function(e) {
-		console.log("mouseover");
 		target.src = "images/back2.png";
-	},true);
+	},false);
 	sender.addEventListener("mouseout",function(e){
 		target.src = "images/back1.png";
 	},false);
