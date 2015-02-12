@@ -1,0 +1,29 @@
+<DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>shake demo</title>
+  <style>
+  #toggle {
+    width: 100px;
+    height: 100px;
+    background: #ccc;
+  }
+  </style>
+<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>  
+
+</head>
+<body>
+ 
+<p>Click anywhere to shake the box.</p>
+<div id="toggle"></div>
+ 
+<script>
+$( document ).click(function() {
+  $( "#toggle" ).effect( "shake" ,{ direction:"up", times:4 ,distance : 2}, 1000);
+});
+</script>
+ 
+</body>
+</html>

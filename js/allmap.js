@@ -39,7 +39,7 @@ var styleJson = [
                   "saturation": -100
               }
           }
-	] ;
+	];
 	map.setMapStyle({ styleJson: styleJson });
 
 //add tags
@@ -98,6 +98,7 @@ function addTagEvents(){
 	}
 	
 }
+
 //add over and out event
 //events for every tags
 function addEvents(sender){
@@ -148,12 +149,11 @@ function overAndOut(){
 	/*
 	map.addEventListener("mouseout",function(e){
 		move = self.setInterval("movee(20,15)",1400);
-
 	});*/
 }
 
 //shake target-- dom obj
-function shake(target) {  
+function shake(target){  
   var $s = $(target);
-  $s.effect('shake', { times:4 ,distance : 2}, 1000);  
+  $s.effect('shake', { direction:"up", times:4 ,distance : 1}, 1000);
 }
