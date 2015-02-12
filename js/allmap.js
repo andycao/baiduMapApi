@@ -1,22 +1,5 @@
-﻿<!DOCTYPE html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>baidu map</title>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
-<script type="text/javascript" src="./js/RichMarker_min.js"></script>
-<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
-
-<style>
-</style>
-</head>
-<body>
-<div id="allmap">
-</div>
-<a href="#" onclick="clic(); return false;">aaa</a>
-
-<script type="text/javascript">
-//baidu map obj
-var map = new BMap.Map("container");
+﻿//baidu map obj
+var map = new BMap.Map("allmap");
 //node list
 var nodeList = new Array;
 //get the current city and set the map center
@@ -150,6 +133,3 @@ function overAndOut(){
 
 	})
 }
-</script>
-</body>
-</html>
