@@ -29,6 +29,18 @@ map.centerAndZoom(point, 15);  //here is the center of map location
 map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
 map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
 map.enableScrollWheelZoom(); 
+//map style
+var styleJson = [
+          {
+              "featureType": "all",
+              "elementType": "all",
+              "stylers": {
+                  "lightness": 10,
+                  "saturation": -100
+              }
+          }
+	] ;
+	map.setMapStyle({ styleJson: styleJson });
 
 //add tags
 //调用api
