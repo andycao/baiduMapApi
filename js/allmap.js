@@ -4,6 +4,11 @@ var map = new BMap.Map("allmap");
 var nodeList = new Array;
 //get the current city and set the map center
 var myCity = new BMap.LocalCity();
+
+var currNode = 0;
+
+/**
+//this is jump to local location not used anymore
 myCity.get(myLoca);
 function myLoca(result){
     var cityName = result.name;
@@ -12,19 +17,11 @@ function myLoca(result){
 		map.setCenter(cityName);
 	}
 }
+*/
 
-//move
-//var move = self.setInterval("movee(20,15)",1400);
-
-//map over and out
-//overAndOut();
-
-function movee(x,y){
-	map.panBy(x,y);
-}
-//initialize map	
-var point = new BMap.Point("北京市"); // 创建点坐标 
-map.centerAndZoom(point, 15);  //here is the center of map location
+//initialize map
+var point = new BMap.Point("北京市"); 				 // 创建点坐标 
+map.centerAndZoom(point, 15);  						 //here is the center of map location
 map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
 map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
 map.enableScrollWheelZoom(); 
@@ -38,8 +35,8 @@ var styleJson = [
                   "saturation": -100
               }
           }
-	] ;
-	map.setMapStyle({ styleJson: styleJson });
+];
+map.setMapStyle({ styleJson: styleJson });
 
 //add tags
 //调用api
@@ -74,6 +71,62 @@ var useCfApi = function (objPrm, successCallback, errorCallback, completeCallbac
 //调用301 api
 useCfApi({ api: "301"}, succ, err, com);
 
+//调用轮巡方法
+
+var turn = setInterval("toNext()",5000);
+
+//api functions
+function succ(result){
+	var list = result.data;
+	console.log(result);
+	for(var i = 0; i < list.length; i++){
+		var point = list[i];
+		//console.log(point.lng + " " + point.lat + " " + point.money);
+		//insert tags
+		//addTag(point.lng,point.lat,point.money);
+		nodeList[nodeList.length] = point;
+	}
+	//add all tag events
+	//addTagEvents();
+}
+
+function err(data){
+	console.log(data);
+}
+
+function com(data){
+	console.log('api invoke complete');
+	toNext();
+}
+
+//method to be intervaled to next node
+function toNext(){
+	//check index
+	if(currNode >= nodeList.length){
+		currNode = 0;
+	}
+	//to the node
+	var point = nodeList[currNode];
+	mynext(point);
+	console.log(currNode);
+	currNode++;
+}
+
+function clearTag(){
+	$(".maptag").remove();
+}
+
+//clear tag
+//move to next location
+//show new tag
+function mynext(point){
+	clearTag();
+	map.panTo(new BMap.Point(point.lng,point.lat));
+	addTag(point.lng,point.lat,point.money);
+	addTagEvents();
+}
+
+//add one tag to the map
 function addTag(x,y,num){
 	//x -- first location
 	//y -- second location
@@ -89,14 +142,19 @@ function addTag(x,y,num){
 	//add the tag to map
 	map.addOverlay(maptag);
 }
-//add tag events
+
+//add tag events to all tags
 function addTagEvents(){
 	var divimg = document.getElementsByName('maptag');
 	for(var i = 0; i < divimg.length; i++){
 		addEvents(divimg[i]);
+		
+		//shake after added the tag
+		shake(divimg[i]);
 	}
 	
 }
+
 //add over and out event
 //events for every tags
 function addEvents(sender){
@@ -115,29 +173,8 @@ function addEvents(sender){
 }
 
 
-function succ(result){
-	var list = result.data;
-	console.log(result);
-	for(var i = 0; i < list.length; i++){
-		var point = list[i];
-		//console.log(point.lng + " " + point.lat + " " + point.money);
-		//insert tags
-		addTag(point.lng,point.lat,point.money);
-	}
-	
-	//then add tag events
-	addTagEvents();
-}
 
-function err(data){
-	console.log(data);
-}
-
-function com(data){
-	console.log('api invoke complete');
-}
-
-//map mouseover and mouseout
+//map mouseover and mouseout  not in use
 function overAndOut(){
 	map.addEventListener("mouseover",function(e){
 		console.log("mouse enter the map");
@@ -146,34 +183,30 @@ function overAndOut(){
 	/*
 	map.addEventListener("mouseout",function(e){
 		move = self.setInterval("movee(20,15)",1400);
-
 	});*/
 }
 
 //shake target-- dom obj
-function shake(target) {  
+function shake(target) {
   var $s = $(target);
   $s.effect('shake', { direction:"up",times:4 ,distance : 1}, 1000);  
 }
 
 //change num to two decimal
 function changeTwoDecimal_f(x){
-var f_x = parseFloat(x);  
-if (isNaN(f_x))  
-{  
-	return null;  
-}  
-var f_x = Math.round(x*100)/100;  
-var s_x = f_x.toString();  
-var pos_decimal = s_x.indexOf('.');  
-if (pos_decimal < 0)  
-{  
-pos_decimal = s_x.length;  
-s_x += '.';  
-}  
-while (s_x.length <= pos_decimal + 2)  
-{  
-s_x += '0';  
-}  
-return s_x;  
-}  
+	var f_x = parseFloat(x);  
+	if (isNaN(f_x)){  
+		return null;  
+	}
+	var f_x = Math.round(x*100)/100;  
+	var s_x = f_x.toString();  
+	var pos_decimal = s_x.indexOf('.');  
+	if (pos_decimal < 0){
+		pos_decimal = s_x.length;  
+		s_x += '.';  
+	}
+	while (s_x.length <= pos_decimal + 2)  {  
+		s_x += '0';  
+	}
+	return s_x;  
+}
