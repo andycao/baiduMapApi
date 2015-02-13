@@ -20,7 +20,6 @@ function myLoca(result){
 //overAndOut();
 
 function movee(x,y){
-	console.log('move');
 	map.panBy(x,y);
 }
 //initialize map	
@@ -39,7 +38,7 @@ var styleJson = [
                   "saturation": -100
               }
           }
-	];
+	] ;
 	map.setMapStyle({ styleJson: styleJson });
 
 //add tags
@@ -80,9 +79,9 @@ function addTag(x,y,num){
 	//y -- second location
 	//num -- money on map
 	
-	var divtag = '<div name="maptag" class="maptag" style="position: absolute; margin: 0pt; padding: 0pt; width: 80px; height: 26px; left: -10px; top: -35px; overflow: hidden;">'
+	var divtag = '<div name="maptag" class="maptag" style="position: absolute; margin: 0pt; padding: 0pt; width: 70px; height: 30px; left: -10px; top: -35px; overflow: hidden;">'
                 +     '<img style="border:none;left:0px; top:0px; position:absolute;" src="images/back1.png">'
-				+ 	  '<label unselectable="on" style="position: absolute; -moz-user-select: none; display: inline; cursor: inherit; border: 0px none; padding: 2px 1px 1px; white-space: nowrap; font: 12px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 28px; top: 1px;">￥' + num + '</label>'
+				+ 	  '<label unselectable="on" style="position: absolute; -moz-user-select: none; display: inline; cursor: inherit; border: 0px none; padding: 2px 1px 1px; white-space: nowrap; font: 12px; z-index: 80; color: rgb(0, 0, 0); left: 5px; top: 2px; font-weight:bold;">￥' + changeTwoDecimal_f(num) + '</label>'
 				+ '</div>';    //tag object
 	var maptag = new BMapLib.RichMarker(divtag,  new BMap.Point(x, y),{
                                                   "anchor" : new BMap.Size(-4,8), //anchor
@@ -98,7 +97,6 @@ function addTagEvents(){
 	}
 	
 }
-
 //add over and out event
 //events for every tags
 function addEvents(sender){
@@ -111,7 +109,6 @@ function addEvents(sender){
 	
 	//move the map
 	map.addEventListener("moveend",function(e){
-		console.log("move map");
 		var t = setTimeout(shake(sender), 800);
 
 	},false);
@@ -123,7 +120,7 @@ function succ(result){
 	console.log(result);
 	for(var i = 0; i < list.length; i++){
 		var point = list[i];
-		console.log(point.lng + " " + point.lat + " " + point.money);
+		//console.log(point.lng + " " + point.lat + " " + point.money);
 		//insert tags
 		addTag(point.lng,point.lat,point.money);
 	}
@@ -137,7 +134,7 @@ function err(data){
 }
 
 function com(data){
-	console.log('api complete');
+	console.log('api invoke complete');
 }
 
 //map mouseover and mouseout
@@ -149,11 +146,34 @@ function overAndOut(){
 	/*
 	map.addEventListener("mouseout",function(e){
 		move = self.setInterval("movee(20,15)",1400);
+
 	});*/
 }
 
 //shake target-- dom obj
-function shake(target){  
+function shake(target) {  
   var $s = $(target);
-  $s.effect('shake', { direction:"up", times:4 ,distance : 1}, 1000);
+  $s.effect('shake', { direction:"up",times:4 ,distance : 1}, 1000);  
 }
+
+//change num to two decimal
+function changeTwoDecimal_f(x){
+var f_x = parseFloat(x);  
+if (isNaN(f_x))  
+{  
+	return null;  
+}  
+var f_x = Math.round(x*100)/100;  
+var s_x = f_x.toString();  
+var pos_decimal = s_x.indexOf('.');  
+if (pos_decimal < 0)  
+{  
+pos_decimal = s_x.length;  
+s_x += '.';  
+}  
+while (s_x.length <= pos_decimal + 2)  
+{  
+s_x += '0';  
+}  
+return s_x;  
+}  
