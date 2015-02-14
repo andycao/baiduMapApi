@@ -21,7 +21,7 @@ function myLoca(result){
 
 //initialize map
 var point = new BMap.Point("北京市"); 				 // 创建点坐标 
-map.centerAndZoom(point, 15);  						 //here is the center of map location
+map.centerAndZoom(point, 13);  						 //here is the center of map location
 map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
 map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
 map.enableScrollWheelZoom(); 
@@ -73,8 +73,11 @@ useCfApi({ api: "301"}, succ, err, com);
 
 //调用轮巡方法
 
-var turn = setInterval("toNext()",5000);
-
+var turn = startMyInterval();
+function startMyInterval(){
+	clearInterval(turn);
+	return setInterval("toNext()",6000);
+}
 //api functions
 function succ(result){
 	var list = result.data;
@@ -108,7 +111,6 @@ function toNext(){
 	//to the node
 	var point = nodeList[currNode];
 	mynext(point);
-	console.log(currNode);
 	currNode++;
 }
 
@@ -168,22 +170,21 @@ function addEvents(sender){
 	//move the map
 	map.addEventListener("moveend",function(e){
 		var t = setTimeout(shake(sender), 800);
-
-	},false);
-}
-
-
-
-//map mouseover and mouseout  not in use
-function overAndOut(){
-	map.addEventListener("mouseover",function(e){
-		console.log("mouse enter the map");
-		window.clearInterval(move);
 	},false);
 	/*
+	//not in use
+	//drag the map
+	map.addEventListener("dragend",function(e){
+		console.log("draged and turn down:" + turn);
+		clearInterval(turn);
+	},true);
+	//mouse out the map
 	map.addEventListener("mouseout",function(e){
-		move = self.setInterval("movee(20,15)",1400);
-	});*/
+		console.log("mouse out  restart interval");
+		//restart interval
+		startMyInterval();
+	},true);
+	*/
 }
 
 //shake target-- dom obj
