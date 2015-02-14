@@ -7,20 +7,8 @@ var myCity = new BMap.LocalCity();
 
 var currNode = 0;
 
-/**
-//this is jump to local location not used anymore
-myCity.get(myLoca);
-function myLoca(result){
-    var cityName = result.name;
-    console.log(cityName)
-	if(cityName){
-		map.setCenter(cityName);
-	}
-}
-*/
-
 //initialize map
-var point = new BMap.Point("北京市"); 				 // 创建点坐标 
+var point = new BMap.Point(116.402544,39.913385); 	// 创建点坐标   北京天安门
 map.centerAndZoom(point, 13);  						 //here is the center of map location
 map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
 map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
@@ -78,6 +66,7 @@ function startMyInterval(){
 	clearInterval(turn);
 	return setInterval("toNext()",6000);
 }
+
 //api functions
 function succ(result){
 	var list = result.data;
@@ -123,6 +112,12 @@ function clearTag(){
 //show new tag
 function mynext(point){
 	clearTag();
+	
+	//check point exist
+	if(!point){
+		return ;
+	}
+
 	map.panTo(new BMap.Point(point.lng,point.lat));
 	addTag(point.lng,point.lat,point.money);
 	addTagEvents();
@@ -190,16 +185,17 @@ function addEvents(sender){
 //shake target-- dom obj
 function shake(target) {
   var $s = $(target);
-  $s.effect('shake', { direction:"up",times:4 ,distance : 1}, 1000);  
+  // $s.effect('shake', { direction:"up",times:4 ,distance : 2}, 1000);  
+  $s.effect('bounce',{times:4,distance:7},1000);
 }
 
 //change num to two decimal
 function changeTwoDecimal_f(x){
-	var f_x = parseFloat(x);  
-	if (isNaN(f_x)){  
-		return null;  
+	var f_x = parseFloat(x);
+	if (isNaN(f_x)){
+		return null;
 	}
-	var f_x = Math.round(x*100)/100;  
+	var f_x = Math.round(x*100)/100;
 	var s_x = f_x.toString();  
 	var pos_decimal = s_x.indexOf('.');  
 	if (pos_decimal < 0){
@@ -211,3 +207,14 @@ function changeTwoDecimal_f(x){
 	}
 	return s_x;  
 }
+/**
+//this is jump to local location not used anymore
+myCity.get(myLoca);
+function myLoca(result){
+    var cityName = result.name;
+    console.log(cityName)
+	if(cityName){
+		map.setCenter(cityName);
+	}
+}
+*/
