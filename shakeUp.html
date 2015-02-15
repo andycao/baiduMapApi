@@ -21,7 +21,8 @@
  
 <script>
 $( document ).click(function() {
-  $( "#toggle" ).effect( "shake" ,{ direction:"up", times:4 ,distance : 2}, 1000);
+  //$( "#toggle" ).effect( "shake" ,{ direction:"up", times:4 ,distance : 2}, 1000);
+	$("#toggle").toggle("explode",{pieces:100});
 });
 </script>
  
