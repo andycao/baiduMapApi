@@ -33,7 +33,7 @@ map.setMapStyle({ styleJson: styleJson });
 var useCfApi = function (objPrm, successCallback, errorCallback, completeCallback) {
     $.ajax({
         type: 'get',
-        url: 'http://cusflo.com/dev/api_c01.php',
+        url: 'http://cusflo.com/api/api_open.php',
         data: objPrm,
         dataType: 'jsonp',
         jsonp: "callback",

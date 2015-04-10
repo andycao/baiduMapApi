@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>static baidu map</title>
+<style>
+img{margin:20px;width:800px;height:600px;}
+</style>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=ngmntn0xA1TYOoNnrXhhTrSO"></script>
+<script type="text/javascript">
+var useCfApi = function (objPrm, successCallback, errorCallback, completeCallback) {
+    $.ajax({
+        type: 'get',
+        url: 'http://cusflo.com/dev/api_c02.php',
+        data: objPrm,
+        dataType: 'jsonp',
+        jsonp: "callback",
+        success: function (data) {
+            if (successCallback) {
+                successCallback(data);
+				console.log('success');
+            }
+        },
+        error: function (data) {
+            if (errorCallback) {
+                errorCallback(data);
+            }
+        },
+        complete: function (data) {
+            if (completeCallback) {
+                completeCallback(data);
+            }
+        }
+    });
+}
+function succ(result){
+	var list = result.data;
+	console.log(result);
+	
+}
+function err(data){
+	console.log(data);
+}
+function com(data){
+	console.log('api complete');
+}
+
+	// 百度地图API功能
+	function myFun(result){
+		var cityName = result.name;
+		useCfApi({ api: "1050", 'city' : cityName}, succ, err, com);
+	}
+	var myCity = new BMap.LocalCity();
+	//这个调用是异步的
+	myCity.get(myFun);
+	
+</script>
+</head>
+<body>
+<img id="myshow" style="" src = "http://api.map.baidu.com/staticimage?
+	width=800&height=600&center=郑州市&labels=海淀|116.487812,40.017524&labelStyles=x点蜜,1,12,0xffffff,0x000fff,1|100点蜜,1,12,0xffffff,0x000fff,1"
+alt="static map" />
+<br>
+<img  src="http://api.map.baidu.com/staticimage?
+width=800&height=600&zoom=11&scale=2&center=北京" />
+<br>
+<img class="mapimg" src="http://api.map.baidu.com/staticimage?
+	center=110.251478,20.021481&amp;width=800&amp;height=600&amp;zoom=15">
+</body>
+</html>
