@@ -3,7 +3,7 @@
 <head>
 <title>static baidu map</title>
 <style>
-img{margin:20px;width:800px;height:600px;}
+img{margin:20px;width:90%;height:auto;}
 </style>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="http://api.map.baidu.com/api?v=2.0&ak=ngmntn0xA1TYOoNnrXhhTrSO"></script>
@@ -11,7 +11,7 @@ img{margin:20px;width:800px;height:600px;}
 var useCfApi = function (objPrm, successCallback, errorCallback, completeCallback) {
     $.ajax({
         type: 'get',
-        url: 'http://cusflo.com/dev/api_c02.php',
+        url: 'http://cusflo.com/api/api_open.php',
         data: objPrm,
         dataType: 'jsonp',
         jsonp: "callback",
@@ -48,7 +48,7 @@ function com(data){
 	// 百度地图API功能
 	function myFun(result){
 		var cityName = result.name;
-		useCfApi({ api: "1050", 'city' : cityName}, succ, err, com);
+		useCfApi({ api: "305", 'city' : cityName}, succ, err, com);
 	}
 	var myCity = new BMap.LocalCity();
 	//这个调用是异步的
@@ -57,14 +57,15 @@ function com(data){
 </script>
 </head>
 <body>
-<img id="myshow" style="" src = "http://api.map.baidu.com/staticimage?
-	width=800&height=600&center=郑州市&labels=海淀|116.487812,40.017524&labelStyles=x点蜜,1,12,0xffffff,0x000fff,1|100点蜜,1,12,0xffffff,0x000fff,1"
-alt="static map" />
+<img id="myshow" style="" src = "http://api.map.baidu.com/staticimage?width=400&height=200&center=110.25120566202,20.021364812826&markers=110.25120566202,20.021364812826&zoom=14&markerStyles=-1,http://api.map.baidu.com/images/marker_red.png"
+alt="map" />
 <br>
-<img  src="http://api.map.baidu.com/staticimage?
-width=800&height=600&zoom=11&scale=2&center=北京" />
-<br>
-<img class="mapimg" src="http://api.map.baidu.com/staticimage?
-	center=110.251478,20.021481&amp;width=800&amp;height=600&amp;zoom=15">
+<img class="mapimg" src="http://api.map.baidu.com/staticimage?center=116.473205,39.958972&width=300&height=200&zoom=16&scale=2
+&markers=%E5%A4%A9%E5%AE%89%E9%97%A8&markerStyles=-1,http://api.map.baidu.com/images/marker_red.png,-1,23,25">
+
+
+
+
+
 </body>
 </html>

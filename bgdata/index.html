@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="jquery.min.js"></script>
+  <script src="md5.min.js"></script>
+</head>
+<body>
+  <h1>baidu test</h1>
+  <script>
+      // nodejs 伪代码
+      var domain = 'm.cusflo.com';
+      var xid = 'acb57d1515f1';
+// exKey为系统分配给您当前域名的密钥，请妥善保管
+var exKey = '';
+var timestamp = Math.round(new Date().getTime() / 1000);
+var params = {
+    // tag: '02001,02002', // 可以在接口中指定调用哪些特定标签，如不指定则返回所有标签
+    xid: xid,
+    domain: domain,
+    timestamp: timestamp,
+    secret: md5( btoa(domain + xid + exKey + timestamp))
+  };
+
+  $.ajax({
+    type: 'get',
+    url: 'http://bdplus.baidu.com/portrait',
+    data: params,
+    dataType: 'jsonp',
+    jsonp: "callback",
+    success: function (json) {
+      console.log(json);
+    },
+    error: function (json) {
+      console.log('error');
+    },
+    complete: function (json) {
+      console.log('complete');
+    }
+  });
+  </script>
+</body>
+</html>
