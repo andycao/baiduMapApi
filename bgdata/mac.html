@@ -1,0 +1,26 @@
+<html>
+<head>
+  <title>enter mac m.cusflo.com</title>
+</head>
+<body>
+<h2>enter mac</h2>
+<form>
+<input type="text" placeholder="mac here">
+<button id="ok">ok</button>
+
+</form>
+<script type="text/javascript">
+  document.getElementById("ok").onclick = function(){
+    var mac = document.getElementsByTagName("input")[0].value
+
+    var _dxt = _dxt || [];_dxt.push(["_setUserId", "{{" + mac +"}}"]);
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//datax.baidu.com/x.js?si=&dm=m.cusflo.com";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  };
+</script>
+</body>
+</html>

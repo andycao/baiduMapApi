@@ -1,0 +1,30 @@
+{
+  "name": "bgdata",
+  "version": "0.0.1",
+  "homepage": "https://github.com/andycao/baiduMapApi",
+  "authors": [
+    "Andy Cao <cao_huayu@hotmail.com>"
+  ],
+  "description": "baidu big data api example",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "baidu",
+    "api",
+    "php",
+    "js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "normalize-css": "normalize.css#~3.0.3"
+  }
+}

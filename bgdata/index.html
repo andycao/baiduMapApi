@@ -1,42 +1,162 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="bower_components/normalize-css/normalize.css">
   <script src="jquery.min.js"></script>
-  <script src="md5.min.js"></script>
+  <style type="text/css">
+  body{
+    font-size: 18px;
+  }
+  .container{
+    width: 90%;
+    margin: 1rem auto;
+  }
+  td, th{
+    border: 1px solid #2894FF;
+    padding: .8rem 1rem;
+    min-width: 5rem;
+    text-align: center;
+  }
+  th{
+    background-color: #ddd;
+  }
+  #error{
+    color: #FF5151;
+
+  }
+  </style>
 </head>
 <body>
-  <h1>baidu test</h1>
+  <div class="container">
+    <h1>api test</h1>
+    <p>
+      <form>
+        <label for="mac">mac:</label>
+        <input id="mac" type="text" placeholder="enter mac">
+      </form>
+    </p>
+    <p><button id="ok">ok</button></p>
+    <!-- <p><button id="test">test</button></p> -->
+    <hr>
+    <p><label>test mac:</label>&nbsp; 0061718018af</p>
+    <p><label>mac:</label>&nbsp;<span id="result"></span></p>
+    <p id="error"></p>
+    <hr>
+    <table id="listTable">
+      <tr>
+        <th>ID</th>
+        <th>标签</th>
+        <th>数值</th>
+      </tr>
+    </table>
+  </div>
+  
   <script>
-      // nodejs 伪代码
-      var domain = 'm.cusflo.com';
-      var xid = 'acb57d1515f1';
-// exKey为系统分配给您当前域名的密钥，请妥善保管
-var exKey = '';
-var timestamp = Math.round(new Date().getTime() / 1000);
-var params = {
-    // tag: '02001,02002', // 可以在接口中指定调用哪些特定标签，如不指定则返回所有标签
-    xid: xid,
-    domain: domain,
-    timestamp: timestamp,
-    secret: md5( btoa(domain + xid + exKey + timestamp))
-  };
+  (function($){
+    //load json file
+    loadFile();
 
-  $.ajax({
-    type: 'get',
-    url: 'http://bdplus.baidu.com/portrait',
-    data: params,
-    dataType: 'jsonp',
-    jsonp: "callback",
-    success: function (json) {
-      console.log(json);
-    },
-    error: function (json) {
-      console.log('error');
-    },
-    complete: function (json) {
-      console.log('complete');
+    $("#ok").click(function(){
+      $(".mydata").remove();
+      $("#error").text("");
+      var mac = $("#mac").val();
+      //check mac format
+      var newmac = mac.replace(/[:_#-\s]/g, "");
+
+      $("#result").text(newmac);
+      invokeBdapi(newmac);
+    });
+
+    $('form').submit(function(){
+      $("#ok").trigger('click');
+      return false;
+    });
+
+    $('#test').click(function(){
+      var mac = $("#mac").val();
+      var newmac = mac.replace(/[:_#-\s]/g, "");
+      console.log(newmac);
+    });
+
+  })(jQuery);
+
+  function invokeBdapi(mac){
+    var xid = mac;
+    var url = "test.php";
+
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {xid : xid},
+      dataType: 'jsonp',
+      jsonp: "callback",
+      success: function (data) {
+        console.log( data );
+      },
+      error: function (data) {
+        var json = data.responseText;
+        var result = JSON.parse(json);
+        var mylist = result.Result;
+
+        if( !mylist ){
+          console.log(json);
+          $("#error").text("错误：" + json);
+          return ;
+        }
+
+        mylist.sort(function(a, b){
+          return b.weight - a.weight;
+        });
+        console.log(mylist);
+
+        result.Result.forEach(function(element, index){
+          addData(element);
+        });
+
+      },
+      complete: function (data) {
+        console.log('complete');
+      }
+    });
+  }
+  var theMap = null;
+  function addData(data){
+    var modal = 
+    "<tr class='mydata'>" +
+    "<td>" + data.tagid + "</td>"+
+    "<td>" + getName(data.tagid) + "</td>"+
+    "<td>" + data.weight + "</td>"+
+    "</tr>"
+
+    $("#listTable").append(modal);
+  }
+
+  //load json file
+  function loadFile(){
+    var jsonFile = "map.json";
+    if( !theMap ){
+      $.getJSON(jsonFile, function(json) {
+        console.log('map.json')
+        theMap = json;
+
+      });
+    } else {
+      console.log(theMap);
     }
-  });
+  }
+
+  //searchName throught json
+  function getName( tagid ){
+
+    for(var i = 0; i < theMap.length; i ++){
+      if( theMap[i].id == parseInt(tagid)) {
+        console.log(theMap[i].name);
+        return theMap[i].name;
+      }
+    }
+  };
   </script>
 </body>
 </html>
